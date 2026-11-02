@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Previous for NetSuite</title>
+    <link rel="icon" href="../icons/icon-32.png" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main id="main-view">
+      <header>
+        <img src="../icons/icon-32.png" alt="" width="24" height="24" />
+        <h1>Previous for NetSuite</h1>
+      </header>
+
+      <section aria-labelledby="dark-heading">
+        <h2 id="dark-heading">Theme</h2>
+        <div class="palettes" role="radiogroup" aria-labelledby="dark-heading">
+          <label class="palette" data-palette="off">
+            <input type="radio" name="dark" value="off" />
+            <span class="mock" aria-hidden="true"><i></i><b></b><b></b></span>
+            <span class="name">Off</span>
+          </label>
+          <label class="palette" data-palette="grey">
+            <input type="radio" name="dark" value="grey" />
+            <span class="mock" aria-hidden="true"><i></i><b></b><b></b></span>
+            <span class="name">Grey</span>
+          </label>
+          <label class="palette" data-palette="navy">
+            <input type="radio" name="dark" value="navy" />
+            <span class="mock" aria-hidden="true"><i></i><b></b><b></b></span>
+            <span class="name">Navy blue</span>
+          </label>
+          <label class="palette" data-palette="black">
+            <input type="radio" name="dark" value="black" />
+            <span class="mock" aria-hidden="true"><i></i><b></b><b></b></span>
+            <span class="name">Black</span>
+          </label>
+          <label class="palette" data-palette="custom">
+            <input type="radio" name="dark" value="custom" />
+            <span class="mock" aria-hidden="true"><i></i><b></b><b></b></span>
+            <span class="name">Custom ›</span>
+          </label>
+        </div>
+      </section>
+
+      <section aria-labelledby="font-heading">
+        <h2 id="font-heading">Font</h2>
+        <select id="font" aria-labelledby="font-heading"></select>
+      </section>
+
+      <div class="columns">
+        <section aria-labelledby="bar-heading">
+          <h2 id="bar-heading">Main bar</h2>
+          <div class="panel toggles">
+            <label class="toggle">
+              <span><strong>Move the main bar to the top</strong></span>
+              <input type="checkbox" id="barTop" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Classic bar button locations</strong></span>
+              <input type="checkbox" id="classicBar" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Move the logo to the main bar</strong></span>
+              <input type="checkbox" id="logoInBar" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Move the profile menu to the right</strong></span>
+              <input type="checkbox" id="profileRight" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Center the search bar</strong></span>
+              <input type="checkbox" id="centerSearch" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong id="shortcut-label">Focus search with a shortcut</strong></span>
+              <input type="checkbox" id="searchShortcut" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Search filter buttons</strong></span>
+              <input type="checkbox" id="searchFilters" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Remove AI Assistant</strong><small>Also removes chats, notifications and AI Insights</small></span>
+              <input type="checkbox" id="hideAi" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Remove the color strip at the top</strong></span>
+              <input type="checkbox" id="hideStripe" role="switch" />
+            </label>
+          </div>
+        </section>
+
+        <section aria-labelledby="records-heading">
+          <h2 id="records-heading">Records</h2>
+          <div class="panel toggles">
+            <label class="toggle">
+              <span><strong>Move action buttons to the left</strong></span>
+              <input type="checkbox" id="actionsLeft" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Repeat action buttons at the bottom</strong></span>
+              <input type="checkbox" id="bottomActions" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Classic divider colors</strong></span>
+              <input type="checkbox" id="classicDividers" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Remove the GL Impact tab</strong><small>From the side rail on transactions</small></span>
+              <input type="checkbox" id="hideGlImpact" role="switch" />
+            </label>
+            <label class="toggle">
+              <span><strong>Copy link button on cases</strong><small>Case # - First Last - Site name</small></span>
+              <input type="checkbox" id="copyLinkButton" role="switch" />
+            </label>
+          </div>
+          <footer>
+            <button id="reset" type="button">Reset to defaults</button>
+          </footer>
+        </section>
+      </div>
+    </main>
+
+    <main id="custom-view" hidden>
+      <header>
+        <button id="back" class="back" type="button" aria-label="Back to settings">‹</button>
+        <h1>Custom theme</h1>
+      </header>
+      <div id="colors" class="panel"></div>
+      <footer>
+        <button id="reset-colors" type="button">Reset colors</button>
+      </footer>
+    </main>
+
+    <script src="../src/settings.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

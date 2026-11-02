@@ -1,0 +1,930 @@
+/* Everything here is gated by attributes content.js sets on <html>, so nothing
+   applies outside NetSuite Next or to a setting that is turned off. */
+
+/* Fonts */
+
+@font-face {
+  font-family: "PFN Inter";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/inter.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PFN Roboto";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/roboto.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PFN IBM Plex Sans";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/ibm-plex-sans.woff2") format("woff2");
+  font-weight: 100 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PFN Source Sans 3";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/source-sans-3.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+/* Suitelets hard-code font families, so this has to win everywhere, except on
+   icon fonts where the glyphs would turn into the wrong characters. */
+html[data-pfn-font] body,
+html[data-pfn-font] body *:not([class*="ico"]):not(.fa, .fas, .far, .fab):not(code, pre, kbd, samp) {
+  font-family: var(--pfn-font) !important;
+}
+
+/* Main bar */
+
+html[data-pfn-bar-top] .ns-ui-omni-box-floating {
+  order: 0;
+}
+
+/* The production stripe is an invisible 7px gap. Sandbox stripes are a warning,
+   so those stay. */
+html[data-pfn-bar-top] .ns-ui-host-header-stripe--production {
+  display: none;
+}
+
+html[data-pfn-bar-top] .ns-ui-omni-box-popup {
+  bottom: auto !important;
+  top: 3rem;
+}
+
+html[data-pfn-bar-top] .ns-ui-omni-box-floating-content .ns-ui-omni-box-input.ns-ui-omni-box--focused {
+  align-self: flex-start;
+  border-radius: 0 0 var(--ns-ui-token-rem-0-5) var(--ns-ui-token-rem-0-5);
+  box-shadow:
+    inset 1px 0 0 var(--ns-ui-omni-box-input-border-color),
+    inset -1px 0 0 var(--ns-ui-omni-box-input-border-color),
+    inset 0 1px 0 var(--ns-ui-omni-box-input-border-color);
+  inset-block-end: auto;
+  inset-block-start: var(--ns-ui-omni-box-focused-input-bottom-offset);
+}
+
+html[data-pfn-bar-top] .ns-ui-omni-box-floating-content:has(.ns-ui-omni-box-input.ns-ui-omni-box--focused) > .ns-ui-omni-box-popup {
+  top: max(
+    var(--ns-ui-navigation-bottom-bar-height),
+    var(--ns-ui-omni-box-focused-input-current-height) + var(--ns-ui-omni-box-focused-input-bottom-offset)
+  );
+}
+
+html[data-pfn-bar-top] .ns-ui-omni-box.ns-ui-host-omni-box--drawer-as-overlay .ns-ui-omni-box-popup.ns-ui-omni-box-popup--list {
+  top: 100%;
+}
+
+/* Search bar. It stays in its own container so its popups still line up, but
+   that container now covers the whole bar. Below this width it would run into
+   the buttons on the left. Above it, the first column keeps it clear of them
+   when the bar is too full for it to stay in the exact center. */
+
+html[data-pfn-center-search] {
+  --pfn-bar-buttons: 360px;
+  --pfn-bar-right: 0px;
+  --pfn-bar-left: calc(
+    var(--pfn-bar-buttons) + var(--pfn-bar-logo, 0px) + var(--pfn-bar-profile, 0px) + var(--pfn-bar-chats, 0px)
+  );
+  --pfn-bar-start: max(var(--pfn-bar-left), var(--pfn-bar-right));
+}
+
+html[data-pfn-center-search][data-pfn-hide-ai] {
+  --pfn-bar-buttons: 290px;
+}
+
+html[data-pfn-center-search][data-pfn-profile-right] {
+  --pfn-bar-right: 200px;
+}
+
+html[data-pfn-center-search][data-pfn-classic-bar] {
+  --pfn-bar-buttons: 230px;
+  --pfn-bar-right: 500px;
+}
+
+html[data-pfn-center-search][data-pfn-classic-bar][data-pfn-hide-ai] {
+  --pfn-bar-right: 380px;
+}
+
+html[data-pfn-center-search]:is([data-pfn-classic-bar], [data-pfn-profile-right]):not([data-pfn-hide-ai]) {
+  --pfn-bar-chats: 133px;
+}
+
+html[data-pfn-logo-bar] {
+  --pfn-bar-logo: 150px;
+}
+
+html:not([data-pfn-profile-right]) {
+  --pfn-bar-profile: 180px;
+}
+
+@media (min-width: 1400px) {
+  html[data-pfn-center-search] .ns-ui-omni-box-bottom-bar {
+    position: relative;
+  }
+
+  html[data-pfn-center-search] .ns-ui-omni-box-bottom-bar__end {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  html[data-pfn-center-search] .ns-ui-host-omni-box .ns-ui-omni-box-floating-content:not(.ns-ui-omni-box-floating-content--compact-focused) {
+    grid-template-columns: minmax(var(--pfn-bar-left), 1fr) minmax(0, 21.142857rem) minmax(0, 1fr) !important;
+    justify-content: stretch;
+    max-width: 100%;
+    pointer-events: none;
+    background-color: transparent;
+  }
+
+  html[data-pfn-center-search] .ns-ui-host-omni-box .ns-ui-omni-box-floating-content:not(.ns-ui-omni-box-floating-content--compact-focused):has(.ns-ui-omni-box-input.ns-ui-omni-box--focused) {
+    grid-template-columns:
+      minmax(var(--pfn-bar-left), 1fr)
+      minmax(0, max(21.142857rem, min(var(--ns-ui-host-token-ask-oracle-search-max-width), calc(100vw - 2 * var(--pfn-bar-start)))))
+      minmax(0, 1fr) !important;
+  }
+
+  html[data-pfn-center-search] .ns-ui-omni-box-floating-content * {
+    pointer-events: auto;
+  }
+
+  html[data-pfn-center-search] .ns-ui-omni-box-floating-content > .ns-ui-omni-box-input-outer-wrapper {
+    grid-area: 1 / 2;
+  }
+
+  html[data-pfn-center-search] .ns-ui-omni-box-floating-content > .ns-ui-host-menu-bar-button-with-menu {
+    grid-area: 1 / 3;
+    justify-self: end;
+    margin-inline-end: var(--oj-sp-rw-ask-oracle-button-box-size);
+  }
+
+  html[data-pfn-center-search] .ns-ui-omni-box-floating-content .ns-ui-toolkit-popup-core__anchor:has(> .ns-ui-host-menu-bar-ask-oracle-button) {
+    grid-area: 1 / 3;
+    justify-self: end;
+  }
+
+  /* NetSuite gives this a grid area, which is what it positions itself in. */
+  html[data-pfn-center-search] .ns-ui-omni-box-floating-content > .ns-ui-omni-box-popup {
+    grid-area: 1 / 2 !important;
+    right: 0 !important;
+    left: 0 !important;
+    width: auto !important;
+    margin-inline: 0 !important;
+  }
+
+  /* The right side is taken, so these sit on either side of the search bar instead. */
+  html[data-pfn-center-search]:is([data-pfn-classic-bar], [data-pfn-profile-right]) .ns-ui-omni-box-floating-content > .ns-ui-host-menu-bar-button-with-menu {
+    grid-area: 1 / 1;
+    margin-inline-end: 0;
+  }
+
+  html[data-pfn-center-search]:is([data-pfn-classic-bar], [data-pfn-profile-right]) .ns-ui-omni-box-floating-content .ns-ui-toolkit-popup-core__anchor:has(> .ns-ui-host-menu-bar-ask-oracle-button) {
+    justify-self: start;
+  }
+}
+
+/* Bar buttons in the classic arrangement: shortcuts, home and the menu to the
+   left of the search bar, and everything else to the right of it. Most of them
+   share a wrapper, which has to step aside for them to be ordered with the rest. */
+
+html:is([data-pfn-classic-bar], [data-pfn-profile-right]) .ns-ui-omni-box-bottom-bar__start:not(.ns-ui-omni-box-bottom-bar__start--hidden) {
+  display: contents;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar__start > :has([telemetryid="menu-bar-button-shortcuts"]) {
+  order: 1;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar .ns-ui-toolkit-popup-core__anchor:has(> [telemetryid="menu-bar-button-home"]) {
+  order: 2;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar__start > :has([telemetryid="menu-bar-button-menu"]) {
+  order: 3;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar__end {
+  order: 4;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar__start > :has([telemetryid="menu-bar-button-create-new"]) {
+  order: 5;
+  margin-inline-start: auto;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar__start > :has([telemetryid="menu-bar-button-create-new"]) + .ns-ui-host-menu-bar-divider {
+  order: 6;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar__start > :has([telemetryid="menu-bar-button-notifications"]) {
+  order: 7;
+}
+
+html[data-pfn-classic-bar] .ns-ui-omni-box-bottom-bar__start > :has([telemetryid="menu-bar-button-notifications"]) + .ns-ui-host-menu-bar-divider {
+  display: none;
+}
+
+html[data-pfn-classic-bar] .ns-ui-host-user-menu-button__wrapper {
+  order: 3;
+}
+
+html[data-pfn-profile-right] .ns-ui-host-user-menu-button__wrapper {
+  order: 8;
+}
+
+html[data-pfn-profile-right]:not([data-pfn-classic-bar]) .ns-ui-host-user-menu-button__wrapper {
+  margin-inline-start: auto;
+}
+
+/* Only the classic layout with the profile on the right keeps a button either
+   side of this divider. */
+html[data-pfn-profile-right]:not([data-pfn-classic-bar]) .ns-ui-host-menu-bar-divider:has(+ .ns-ui-host-user-menu-button__wrapper),
+html[data-pfn-classic-bar]:not([data-pfn-profile-right]) .ns-ui-host-menu-bar-divider:has(+ .ns-ui-host-user-menu-button__wrapper) {
+  display: none;
+}
+
+/* Company logo. It keeps a white backing since logos are drawn for a light
+   background, and the header it left would otherwise hold an empty title. */
+
+.pfn-bar-logo {
+  flex: 0 0 auto;
+  align-self: center;
+  box-sizing: border-box;
+  max-width: 140px;
+  height: 40px;
+  margin-inline: 5px;
+  padding: 3px 6px;
+  object-fit: contain;
+  background-color: #ffffff;
+  border-radius: 6px;
+}
+
+html[data-pfn-logo-bar] .ns-ui-header-title:has(.ns-ui-header-logo-container img) {
+  display: none;
+}
+
+/* Record filter buttons, shown only while the search popup is in use. */
+
+.pfn-search-filters {
+  display: none;
+}
+
+html[data-pfn-search-filters] .ns-ui-omni-box-floating-content:has(.ns-ui-omni-box--focused) .pfn-search-filters {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px;
+  color: var(--ns-ui-omni-box-popup-text-color);
+  background: var(--ns-ui-omni-box-popup-bg);
+  border-radius: var(--ns-ui-omni-box-popup-border-radius-top);
+}
+
+.pfn-search-filters button {
+  min-height: 26px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, currentcolor 40%, transparent);
+  border-radius: 13px;
+}
+
+.pfn-search-filters button:hover {
+  background: color-mix(in srgb, currentcolor 12%, transparent);
+}
+
+.pfn-search-filters button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--pfn-accent, currentcolor) 35%, transparent);
+  border-color: var(--pfn-accent, currentcolor);
+}
+
+/* Action buttons sit under the title, running right to left from Edit and Save
+   like the old layout. row-reverse keeps them left-aligned with flex-end. */
+
+html[data-pfn-actions-left] .ns-ui-toolkit-header:has(> .ns-ui-toolkit-header-actions-row) {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+html[data-pfn-actions-left] .ns-ui-toolkit-header:has(> .ns-ui-toolkit-header-actions-row) > * {
+  grid-column: 1;
+}
+
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions-row {
+  align-self: start;
+  justify-self: start;
+  grid-row: auto;
+  max-width: 100%;
+  margin-block-start: 8px;
+}
+
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions {
+  flex-direction: row-reverse;
+  justify-content: flex-end !important;
+}
+
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions .oj-toolbar,
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions__secondary,
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions__secondary-buttons,
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions__primary,
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions :has(> [data-pfn-first]) {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions .oj-toolbar,
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions__secondary-buttons {
+  flex-wrap: wrap-reverse;
+  gap: 8px;
+}
+
+/* A reversed row ends on the left, so the highest order is the farthest left. */
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions__primary {
+  order: 1;
+  gap: 8px;
+}
+
+html[data-pfn-actions-left] [data-pfn-first] {
+  order: 2;
+}
+
+html[data-pfn-actions-left] .ns-ui-toolkit-header-actions > .pfn-copy-link {
+  order: -1;
+}
+
+/* Bar buttons */
+
+html[data-pfn-hide-ai] .ns-ui-toolkit-popup-core__anchor:has(> .ns-ui-host-menu-bar-ask-oracle-button) {
+  display: none;
+}
+
+html[data-pfn-hide-ai] .ns-ui-host-menu-bar-button-with-menu:has([telemetryid="menu-bar-button-notifications"]),
+html[data-pfn-hide-ai] .ns-ui-host-menu-bar-button-with-menu:has([telemetryid="menu-bar-button-notifications"]) + .ns-ui-host-menu-bar-divider,
+html[data-pfn-hide-ai] .ns-ui-host-menu-bar-button-with-menu:has(.ns-ui-host-your-chats-icon) {
+  display: none;
+}
+
+/* AI Insights and GL Impact. ai-insights.js finds the rail tabs and the header
+   button. */
+
+html[data-pfn-hide-ai] [data-pfn-ai-tab],
+html[data-pfn-hide-ai] [data-pfn-ai-button],
+html[data-pfn-hide-gl] [data-pfn-gl-tab],
+[data-pfn-rail-empty] .tab-drawer__tab-bar,
+[data-pfn-rail-empty] .tab-drawer__aside,
+html[data-pfn-hide-ai] .tab-drawer__aside:has(.ns-ui-toolkit-narrative-insights-drawer-content-drawer),
+html[data-pfn-hide-ai] .tab-drawer__tab-bar__skeleton {
+  display: none !important;
+}
+
+html[data-pfn-hide-stripe] .ns-ui-host-header-stripe {
+  display: none;
+}
+
+/* Copy link button. Colors inherit so it matches the header in every theme. */
+
+html .pfn-copy-link {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin-inline-start: 14px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, currentcolor 50%, transparent);
+  border-radius: 3.5px;
+}
+
+html .pfn-copy-link:hover {
+  background: color-mix(in srgb, currentcolor 12%, transparent);
+}
+
+html .pfn-copy-link:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 1px;
+}
+
+/* Bottom action buttons */
+
+.pfn-bottom-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px 24px 28px;
+}
+
+.pfn-bottom-actions button {
+  min-height: 32px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, currentcolor 50%, transparent);
+  border-radius: 3.5px;
+}
+
+.pfn-bottom-actions .pfn-icon {
+  width: 32px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pfn-bottom-actions button:hover {
+  background: color-mix(in srgb, currentcolor 12%, transparent);
+}
+
+.pfn-bottom-actions button:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 1px;
+}
+
+.pfn-bottom-actions button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.pfn-bottom-actions .pfn-primary,
+.pfn-bottom-actions .pfn-primary:hover {
+  color: #ffffff;
+  background: #264759;
+  border-color: #264759;
+}
+
+/* Section dividers, in the colors of the old NetSuite theme. Dark palettes bring
+   their own. These bands are in the classic frames, and have to beat recolor.js. */
+
+html[data-pfn-dividers] {
+  --pfn-divider: #e0e6ef;
+  --pfn-divider-text: #2d3a4d;
+}
+
+html[data-pfn-dividers][data-pfn-frame] .fgroup_title.fgroup_title {
+  color: var(--pfn-divider-text) !important;
+  background-color: var(--pfn-divider) !important;
+  border-color: var(--pfn-divider) !important;
+}
+
+html[data-pfn-dividers][data-pfn-frame] .fgroup_title .uir-field-group--collapsible-icon {
+  color: inherit !important;
+}
+
+/* NetSuite's title margins and large type only looked right with no band behind
+   them. This is the slim band of the old theme. */
+html[data-pfn-dividers][data-pfn-frame] .fgroup_title.uir-field-group-title {
+  display: flex;
+  min-height: 26px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 26px;
+}
+
+html[data-pfn-dividers][data-pfn-frame] .fgroup_title .uir-field-group--collapsible-icon {
+  height: 26px;
+  margin-block: 0;
+  padding-block: 0;
+}
+
+html[data-pfn-dividers][data-pfn-frame] tr.uir-field-group-content > td {
+  padding-top: 8px;
+}
+
+/* Dark palettes */
+
+html[data-pfn-dark] {
+  --pfn-tint: 76%;
+  --pfn-menu-text: var(--pfn-text);
+}
+
+html[data-pfn-dark="grey"] {
+  --pfn-page: #1f2023;
+  --pfn-surface: #2a2b2f;
+  --pfn-raised: #34363b;
+  --pfn-raised-2: #3f4147;
+  --pfn-hover: #474a51;
+  --pfn-border: #4a4c53;
+  --pfn-text: #e7e7ea;
+  --pfn-muted: #adafb6;
+  --pfn-heading: #e7e7ea;
+  --pfn-link: #8cc4f0;
+  --pfn-accent: #8fa3b8;
+  --pfn-bar: #17181a;
+  --pfn-bar-input: #2a2b2f;
+  --pfn-divider: #4a4c53;
+  --pfn-divider-text: #e7e7ea;
+  --pfn-menu: #5a6472;
+  --pfn-menu-filter: saturate(0.15);
+}
+
+html[data-pfn-dark="navy"] {
+  --pfn-page: #0b1526;
+  --pfn-surface: #12203a;
+  --pfn-raised: #1a2c4d;
+  --pfn-raised-2: #233860;
+  --pfn-hover: #2b4470;
+  --pfn-border: #2f4670;
+  --pfn-text: #e3eaf5;
+  --pfn-muted: #a1b2cb;
+  --pfn-heading: #e3eaf5;
+  --pfn-link: #8cc4f0;
+  --pfn-accent: #5b8fd6;
+  --pfn-bar: #081020;
+  --pfn-bar-input: #142442;
+  --pfn-divider: #2b4470;
+  --pfn-divider-text: #e3eaf5;
+  --pfn-menu: #2c4f86;
+  --pfn-menu-filter: hue-rotate(15deg);
+}
+
+html[data-pfn-dark="black"] {
+  --pfn-page: #000000;
+  --pfn-surface: #0d0d0d;
+  --pfn-raised: #181818;
+  --pfn-raised-2: #232323;
+  --pfn-hover: #2c2c2c;
+  --pfn-border: #303030;
+  --pfn-text: #e8e8e8;
+  --pfn-muted: #a2a2a2;
+  --pfn-heading: #e8e8e8;
+  --pfn-link: #8cc4f0;
+  --pfn-accent: #8c8c8c;
+  --pfn-bar: #000000;
+  --pfn-bar-input: #1a1a1a;
+  --pfn-divider: #2c2c2c;
+  --pfn-divider-text: #e8e8e8;
+  --pfn-menu: #3a3a3a;
+  --pfn-menu-filter: grayscale(1);
+}
+
+/* The custom theme's picked colors are set inline by content.js. Everything
+   else is mixed from them, which works for a dark or a light background. */
+html[data-pfn-dark="custom"] {
+  --pfn-raised: color-mix(in srgb, var(--pfn-surface) 92%, var(--pfn-text));
+  --pfn-raised-2: color-mix(in srgb, var(--pfn-surface) 85%, var(--pfn-text));
+  --pfn-hover: color-mix(in srgb, var(--pfn-surface) 78%, var(--pfn-text));
+  --pfn-muted: color-mix(in srgb, var(--pfn-text) 72%, var(--pfn-surface));
+  --pfn-bar-input: color-mix(in srgb, var(--pfn-bar) 88%, var(--pfn-text));
+}
+
+html[data-pfn-dark] {
+  color-scheme: dark;
+}
+
+html[data-pfn-custom-light] {
+  --pfn-tint: 34%;
+  color-scheme: light;
+}
+
+/* Dark: shell. NetSuite's own dark theme does most of the work, these rebase
+   its surfaces onto the chosen palette. */
+
+html[data-pfn-dark] {
+  --ns-ui-base-background: var(--pfn-page);
+  --ns-ui-token-dark-ocean-30: var(--pfn-surface);
+  --ns-ui-token-dark-ocean-40: var(--pfn-raised);
+  --ns-ui-token-dark-ocean-50: var(--pfn-raised-2);
+}
+
+html[data-pfn-dark]:not([data-pfn-frame]) body {
+  background-color: var(--pfn-page);
+}
+
+html[data-pfn-dark] .oj-c-colorscheme-dark,
+html[data-pfn-dark] .ns-ui-toolkit-theme-mode-dark,
+html[data-pfn-dark] .oj-color-invert {
+  --ns-ui-token-color-page-background-neutral-10: var(--pfn-surface);
+  --oj-c-page-background-neutral10: var(--pfn-surface);
+  --oj-c-surface-neutral0: var(--pfn-surface);
+  --oj-c-surface-neutral10: var(--pfn-raised);
+  --oj-c-surface-popup: var(--pfn-raised);
+  --ns-ui-token-color-text-icon-primary: var(--pfn-text);
+  --ns-ui-token-color-text-icon-secondary: var(--pfn-muted);
+  --ns-ui-token-color-text-icon-link: var(--pfn-link);
+  --ns-ui-token-color-border-selected: var(--pfn-accent);
+  --ns-ui-token-color-border-divider: var(--pfn-border);
+  --oj-c-text-icon-primary: var(--pfn-text);
+  --oj-c-text-icon-secondary: var(--pfn-muted);
+  --oj-c-text-icon-link: var(--pfn-link);
+  --oj-core-text-color-primary: var(--pfn-text);
+  --oj-core-text-color-secondary: var(--pfn-muted);
+  --oj-link-text-color: var(--pfn-link);
+  --oj-link-text-color-active: var(--pfn-link);
+  --oj-link-text-color-visited: var(--pfn-link);
+  --oj-c-border-enabled: color-mix(in srgb, var(--pfn-text) 50%, transparent);
+  --oj-core-border-color-enabled: color-mix(in srgb, var(--pfn-text) 50%, transparent);
+}
+
+/* Message dialogs, such as "Discard changes?", keep a fixed light background. */
+html[data-pfn-dark] .oj-dialog {
+  --oj-dialog-bg-color: var(--pfn-raised);
+  --oj-dialog-border-color: var(--pfn-border);
+}
+
+/* The menu is layered: a flat base, a blurred glow, and a blue swirl image.
+   The base and glow are mixed from the palette's menu color, and the image is
+   turned to match it, so the gradient survives. */
+html[data-pfn-dark] .ns-ui-host-menu-bar-window-content {
+  background-color: color-mix(in srgb, var(--pfn-menu) 68%, #000000) !important;
+}
+
+html[data-pfn-dark] .ns-ui-host-menu-bar-window-content__effect-top-glow {
+  background-color: color-mix(in srgb, var(--pfn-menu) 75%, #ffffff) !important;
+}
+
+html[data-pfn-dark] .ns-ui-host-menu-bar-window-content__effect-bottom-background {
+  filter: var(--pfn-menu-filter) !important;
+}
+
+/* The menu brings its own theme providers, so its text has to be set on them. */
+html[data-pfn-dark] .ns-ui-host-menu-bar-window-content,
+html[data-pfn-dark] .ns-ui-host-menu-bar-window-content :is(.oj-c-colorscheme-dark, .ns-ui-toolkit-theme-mode-dark, .oj-color-invert) {
+  --ns-ui-token-color-text-icon-primary: var(--pfn-menu-text);
+  --ns-ui-token-color-text-icon-secondary: color-mix(in srgb, var(--pfn-menu-text) 75%, transparent);
+  --oj-c-text-icon-primary: var(--pfn-menu-text);
+  --oj-c-text-icon-secondary: color-mix(in srgb, var(--pfn-menu-text) 75%, transparent);
+  --oj-core-text-color-primary: var(--pfn-menu-text);
+  --oj-core-text-color-secondary: color-mix(in srgb, var(--pfn-menu-text) 75%, transparent);
+  color: var(--pfn-menu-text);
+}
+
+html[data-pfn-dark] .ns-ui-omni-box-floating {
+  --ns-ui-omni-box-bottom-bar-background: var(--pfn-bar);
+  --ns-ui-omni-box-bottom-bar-input-background: var(--pfn-bar-input);
+}
+
+/* Search results use a translucent navy and tokens from NetSuite's fixed color
+   scale, none of which follow the dark theme. */
+html[data-pfn-dark] .ns-ui-omni-box-popup {
+  --ns-ui-token-light-ocean-170: var(--pfn-raised);
+  --ns-ui-token-light-ocean-180: var(--pfn-surface);
+  --ns-ui-omni-box-popup-bg: var(--pfn-raised);
+  --ns-ui-omni-box-popup-bg-active: var(--pfn-hover);
+  --ns-ui-omni-box-popup-text-color: var(--pfn-text);
+  --ns-ui-omni-box-secondary-text-color: var(--pfn-muted);
+  --ns-ui-omni-box-popup-scrollbar-thumb-bg: var(--pfn-border);
+  --ns-ui-token-color-overlay-hover: var(--pfn-hover);
+}
+
+html[data-pfn-dark] .ns-ui-omni-box-popup-header {
+  background-color: transparent;
+}
+
+html[data-pfn-dark] .ns-ui-omni-box-popup .ns-ui-omni-box-bottom-banner {
+  --ns-ui-omni-box-bottom-banner-background-image: none;
+}
+
+html[data-pfn-dark] .ns-ui-omni-box-popup .ns-ui-host-omni-box-popup-list-item:is(.ns-ui-host-omni-box-popup-list-item--selected, :focus-within, :active) {
+  border-inline-start-color: var(--pfn-accent);
+}
+
+/* Only the custom theme recolors primary buttons, since that's what its accent
+   is for. The built-in palettes keep NetSuite's. */
+html[data-pfn-dark="custom"] .ns-ui-toolkit-button--call-to-action {
+  --oj-c-base-button-variants-call-to-action-base-background-color: var(--pfn-accent);
+  --oj-c-base-button-variants-call-to-action-base-border-color: var(--pfn-accent);
+  --oj-c-base-button-variants-call-to-action-base-color: #ffffff;
+  --oj-c-base-button-variants-call-to-action-hover-background-overlay-color: color-mix(in srgb, var(--pfn-accent) 85%, #ffffff);
+  --oj-c-base-button-variants-call-to-action-active-background-overlay-color: color-mix(in srgb, var(--pfn-accent) 85%, #000000);
+}
+
+html[data-pfn-dark="custom"][data-pfn-accent-light] .ns-ui-toolkit-button--call-to-action {
+  --oj-c-base-button-variants-call-to-action-base-color: #000000;
+}
+
+html[data-pfn-dark="custom"] {
+  --pfn-on-accent: #ffffff;
+}
+
+html[data-pfn-dark="custom"][data-pfn-accent-light] {
+  --pfn-on-accent: #000000;
+}
+
+/* The record type icon in the header. Its texture is drawn for the teal. */
+html[data-pfn-dark="custom"] .ns-ui-layout-header .oj-avatar {
+  color: var(--pfn-on-accent);
+  background-color: var(--pfn-accent);
+}
+
+html[data-pfn-dark="custom"] .ns-ui-layout-header .oj-avatar-background-image {
+  background-image: none;
+}
+
+html[data-pfn-dark="custom"] .ns-ui-layout-header .oj-avatar-icon {
+  color: inherit;
+}
+
+html[data-pfn-dark] .ns-ui-header-title,
+html[data-pfn-dark] .ns-ui-header--text {
+  color: var(--pfn-heading);
+}
+
+html[data-pfn-dark] .ns-ui-layout-header .ns-ui-toolkit-link {
+  color: var(--pfn-link);
+}
+
+/* AI Insights, for when it isn't turned off. Its cards are hard-coded light. */
+html[data-pfn-dark] .ns-ui-toolkit-narrative-insights-drawer-content-card {
+  background-color: var(--pfn-raised);
+}
+
+html[data-pfn-dark] .ns-ui-toolkit-narrative-insights-drawer-content-generate-insight-button {
+  --oj-button-outlined-chrome-bg-color: var(--pfn-raised);
+  --oj-core-bg-color-hover: var(--pfn-hover);
+}
+
+html[data-pfn-dark] .ns-ui-omni-box-input-outer-wrapper {
+  background-color: var(--pfn-bar);
+}
+
+html[data-pfn-dark] .ns-ui-basic-layout,
+html[data-pfn-dark] .ns-ui-panel--edge-to-edge {
+  background-color: var(--pfn-page) !important;
+  background-image: none !important;
+}
+
+html[data-pfn-dark] .ns-ui-panel,
+html[data-pfn-dark] .ns-ui-layout-content {
+  background-color: var(--pfn-surface);
+}
+
+html[data-pfn-dark] .ns-ui-layout-content:has(.ns-ui-panel--edge-to-edge) {
+  background-color: transparent;
+}
+
+html[data-pfn-dark] .ns-ui-layout-header {
+  --ns-ui-header-background-color: var(--pfn-page);
+}
+
+html[data-pfn-dark] .ns-ui-layout-header .ns-ui-toolkit-header {
+  background-color: var(--ns-ui-header-background-color);
+}
+
+/* Company logos are drawn for a light background. */
+html[data-pfn-dark] .ns-ui-layout-header img {
+  box-sizing: border-box;
+  padding: 3px 6px;
+  background-color: #ffffff;
+  border-radius: 6px;
+}
+
+/* Dark: loading states. The record skeleton sits behind the classic iframe
+   while it loads, and its colors are hard-coded, keyframes included. */
+
+html[data-pfn-dark]:not([data-pfn-frame]) {
+  background-color: var(--pfn-page);
+}
+
+html[data-pfn-dark] .ns-ui-loading-screen {
+  background-color: var(--pfn-page);
+}
+
+html[data-pfn-dark] .ns-ui-loading-screen-progress-bar {
+  background-color: var(--pfn-raised-2);
+}
+
+/* The loading logo is drawn dark for the light screen. */
+html[data-pfn-dark]:not([data-pfn-custom-light]) .ns-ui-loading-screen-logo {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__summary-box,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__tabs-container,
+html[data-pfn-dark] .ns-ui-toolkit-tab-drawer .tab-drawer__tab-bar,
+html[data-pfn-dark] .ns-ui-toolkit-tab-drawer .tab-drawer__tab-bar__skeleton {
+  background-color: var(--pfn-surface) !important;
+}
+
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__summary-box-title,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__summary-box__row-data,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__summary-box__row-header,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__summary-box__row-total-data,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__summary-box__row-total-header,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__tab,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-container__table-row,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-field,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-form-template__skeleton-title {
+  background: var(--pfn-raised-2) !important;
+  animation-name: pfn-skeleton;
+}
+
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-home-template__skeleton__horizontal-divider,
+html[data-pfn-dark] .ns-ui-toolkit-hybrid-home-template__skeleton-container__item:nth-child(odd)::after {
+  background: var(--pfn-border);
+}
+
+@keyframes pfn-skeleton {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Dark: frames */
+
+html[data-pfn-dark][data-pfn-frame] {
+  background-color: var(--pfn-surface);
+}
+
+html[data-pfn-dark] [data-pfn-noimg] {
+  background-image: none !important;
+}
+
+html[data-pfn-dark] [data-pfn-bd~="t"] {
+  border-top-color: var(--pfn-border) !important;
+}
+
+html[data-pfn-dark] [data-pfn-bd~="r"] {
+  border-right-color: var(--pfn-border) !important;
+}
+
+html[data-pfn-dark] [data-pfn-bd~="b"] {
+  border-bottom-color: var(--pfn-border) !important;
+}
+
+html[data-pfn-dark] [data-pfn-bd~="l"] {
+  border-left-color: var(--pfn-border) !important;
+}
+
+html[data-pfn-dark]:not([data-pfn-custom-light]) [data-pfn-invert] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html[data-pfn-dark] [data-pfn-ink~="t"] {
+  border-top-color: var(--pfn-text) !important;
+}
+
+html[data-pfn-dark] [data-pfn-ink~="r"] {
+  border-right-color: var(--pfn-text) !important;
+}
+
+html[data-pfn-dark] [data-pfn-ink~="b"] {
+  border-bottom-color: var(--pfn-text) !important;
+}
+
+html[data-pfn-dark] [data-pfn-ink~="l"] {
+  border-left-color: var(--pfn-text) !important;
+}
+
+/* Link underlines on hover come from this token, not the link's color. */
+html[data-pfn-dark][data-pfn-frame] {
+  --nsn-uif-redwood-color-light-text-link: var(--pfn-link);
+}
+
+/* NetSuite's teal primary buttons and toggles, for the custom theme's accent. */
+html[data-pfn-dark="custom"] [data-pfn-brand] {
+  color: var(--pfn-on-accent) !important;
+  background-color: var(--pfn-accent) !important;
+  border-color: var(--pfn-accent) !important;
+}
+
+html[data-pfn-dark="custom"] [data-pfn-brand-bd~="t"] {
+  border-top-color: var(--pfn-accent) !important;
+}
+
+html[data-pfn-dark="custom"] [data-pfn-brand-bd~="r"] {
+  border-right-color: var(--pfn-accent) !important;
+}
+
+html[data-pfn-dark="custom"] [data-pfn-brand-bd~="b"] {
+  border-bottom-color: var(--pfn-accent) !important;
+}
+
+html[data-pfn-dark="custom"] [data-pfn-brand-bd~="l"] {
+  border-left-color: var(--pfn-accent) !important;
+}
+
+/* Logos and other pictures in image fields are drawn for a light background,
+   like the company logo. They bring their own white one, which recolor.js
+   would otherwise darken. */
+html[data-pfn-dark][data-pfn-frame] .uir-field-input[data-field-sub-type="media"] img {
+  box-sizing: content-box;
+  padding: 4px 8px;
+  background-color: #ffffff !important;
+  border-radius: 6px;
+}
+
+html[data-pfn-dark][data-pfn-frame] ::placeholder {
+  color: var(--pfn-muted) !important;
+}
+
+html[data-pfn-dark][data-pfn-frame] :is(h1, h2, h3, h4, .uir-page-title, .fgroup_title) {
+  color: var(--pfn-heading) !important;
+}
+
+html[data-pfn-dark][data-pfn-frame] :is(.formtabon, .formsubtabon) {
+  border-bottom-color: var(--pfn-accent) !important;
+}

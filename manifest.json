@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "Previous for NetSuite",
+  "version": "1.0.0",
+  "description": "Dark mode, custom fonts, and a more familiar layout for NetSuite Next.",
+  "permissions": [
+    "storage"
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "Previous for NetSuite",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.app.netsuite.com/*"
+      ],
+      "js": [
+        "src/settings.js",
+        "src/shell-dark.js",
+        "src/recolor.js",
+        "src/copy-link.js",
+        "src/bottom-actions.js",
+        "src/search-shortcut.js",
+        "src/search-filters.js",
+        "src/bar-logo.js",
+        "src/ai-insights.js",
+        "src/primary-actions.js",
+        "src/content.js"
+      ],
+      "css": [
+        "src/content.css"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "fonts/*.woff2"
+      ],
+      "matches": [
+        "https://*.app.netsuite.com/*"
+      ]
+    }
+  ]
+}
